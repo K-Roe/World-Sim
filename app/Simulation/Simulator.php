@@ -20,9 +20,9 @@ class Simulator
         $this->tribe = new Tribe();
     }
 
-    public function run(int $years = 150): void
+    public function run(int $years): void
     {
-        $this->tribe->seed(10);
+        $this->tribe->seed(50);
 
         for ($i = 0; $i < $years; $i++) {
             $this->simulateYear();

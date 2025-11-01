@@ -12,7 +12,7 @@ class Tribe
     protected array $sexes = ['Male', 'Female'];
     protected array $surnames = ['Stone', 'Flint', 'River', 'Ash', 'Wolf', 'Sky', 'Oak', 'Hill'];
 
-    public function seed(int $count = 100): void
+    public function seed(int $count): void
     {
         for ($i = 0; $i < $count; $i++) {
             $familyName = $this->surnames[array_rand($this->surnames)];
@@ -23,7 +23,7 @@ class Tribe
                 'name' => $this->generateName() . ' ' . $familyName,
                 'family' => $familyName,
                 'sex' => $sex,
-                'age' => rand(16, 40),
+                'age' => rand(16, 20),
                 'mood' => rand(40, 90),
                 'hunger' => rand(0, 40),
                 'knowledge' => ['foraging'],
@@ -45,7 +45,7 @@ class Tribe
         $newChildren = [];
 
         foreach ($couples as [$a, $b]) {
-            if ($a->canHaveChildren() && $b->canHaveChildren() && rand(1,100) <= 25) {
+            if ($a->canHaveChildren() && $b->canHaveChildren() && rand(1,100) <= 50) {
                 $child = $this->addChild($a, $b);
                 $newChildren[] = $child;
             }
@@ -77,7 +77,8 @@ class Tribe
     protected function addChild(Person $a, Person $b): Person
     {
         $sexes = ['Male', 'Female'];
-        $surname = rand(0,1) ? $a->family : $b->family;
+
+        $surname = $a->sex === 'Male' ? $a->family : $b->family;
 
         $child = new Person([
             'id' => uniqid(),
