@@ -18,11 +18,12 @@ class Reporter
         $this->output->writeln($world->describe());
     }
 
-    public function tribeSummary(Tribe $tribe): void
+    public function tribeSummary(Tribe $tribe, World $world): void
     {
         $alive = count(array_filter($tribe->people, fn($p) => $p->alive));
         $total = count($tribe->people);
-        $this->output->writeln("📊 Population — Alive: {$alive} / Total: {$total}");
+        $food = $world->food;
+        $this->output->writeln("📊 Population — Alive: {$alive} / Total: {$total} Food: {$food}");
     }
 
     public function familyTrees(Tribe $tribe): void
@@ -38,7 +39,7 @@ class Reporter
             $this->output->writeln("\n🌳 {$family->name} Family — " .
                 count($family->members) . " members ({$stats['alive']} alive, {$stats['dead']} dead, avg age {$stats['avgAge']})");
 
-            $roots = collect($family->members)->sortByDesc('age')->take(3);
+            $roots = collect($family->members)->sortByDesc('age')->take(20);
             foreach ($roots as $root) {
                 $this->output->writeln("  👤 {$root->summary()}");
             }

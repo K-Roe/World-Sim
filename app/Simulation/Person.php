@@ -17,6 +17,7 @@ class Person
     public int $mood;
     public int $hunger;
     public array $memories = [];
+    public int $hunterGather;
 
     public function __construct(array $data)
     {

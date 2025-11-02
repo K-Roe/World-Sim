@@ -12,6 +12,10 @@ class Tribe
     protected array $sexes = ['Male', 'Female'];
     protected array $surnames = ['Stone', 'Flint', 'River', 'Ash', 'Wolf', 'Sky', 'Oak', 'Hill'];
 
+    /**
+     * @param int $count
+     * @return void
+     */
     public function seed(int $count): void
     {
         for ($i = 0; $i < $count; $i++) {
@@ -26,7 +30,8 @@ class Tribe
                 'age' => rand(16, 20),
                 'mood' => rand(40, 90),
                 'hunger' => rand(0, 40),
-                'knowledge' => ['foraging'],
+                'hunterGather' => 1,
+                'knowledge' => ['foraging','hunting'],
             ]);
 
             $this->people[] = $person;
@@ -39,6 +44,9 @@ class Tribe
     // SOCIAL BEHAVIOUR
     // -------------------
 
+    /**
+     * @return array
+     */
     public function reproduce(): array
     {
         $couples = $this->findCouples();
@@ -54,6 +62,9 @@ class Tribe
         return $newChildren;
     }
 
+    /**
+     * @return array
+     */
     protected function findCouples(): array
     {
         $adults = array_filter($this->people, fn($p) => $p->isAdult() && $p->alive);
@@ -74,6 +85,11 @@ class Tribe
         return $pairs;
     }
 
+    /**
+     * @param Person $a
+     * @param Person $b
+     * @return Person
+     */
     protected function addChild(Person $a, Person $b): Person
     {
         $sexes = ['Male', 'Female'];
@@ -87,7 +103,8 @@ class Tribe
             'sex' => $sexes[array_rand($sexes)],
             'age' => 0,
             'mood' => rand(50, 90),
-            'hunger' => rand(10, 20),
+            'hunger' => rand(0, 20),
+            'hunterGather' => 1,
             'knowledge' => array_slice($a->knowledge, 0, rand(1, count($a->knowledge))),
             'parents' => [$a->id, $b->id],
         ]);
@@ -104,7 +121,9 @@ class Tribe
     // -------------------
     // UTIL
     // -------------------
-
+    /**
+     * @return array
+     */
     protected function generateName(): string
     {
         $syllables = ['ka','lo','mi','ta','ra','su','ze','nu','vi','po','chi','do','la','mo','ri','sa','te','vo','wi'];
